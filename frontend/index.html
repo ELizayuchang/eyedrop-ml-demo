@@ -1,0 +1,40 @@
+<!-- static/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>眼睛状态识别</title> 
+</head>
+<body>
+  <h2>上传一张图片进行识别</h2>
+  <input type="file" id="fileInput" />
+  <button onclick="upload()">上传并识别</button>
+  <h3 id="result"></h3>
+
+  <script>
+    function upload() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("请选择一个图片文件");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      fetch("http://127.0.0.1:5050/predict", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('result').innerText = "识别结果：" + data.prediction;
+      })
+      .catch(error => {
+        document.getElementById('result').innerText = "请求失败：" + error;
+      });
+    }
+  </script>
+</body>
+</html>
