@@ -4,5 +4,5 @@ COPY . /app
 
 RUN pip install --upgrade pip
 RUN pip install -r backend/requirements.txt
-EXPOSE 5050
+EXPOSE 8080
 CMD ["python", "backend/backend.py"] 
