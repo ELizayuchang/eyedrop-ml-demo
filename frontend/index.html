@@ -3,36 +3,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>眼睛状态识别</title> 
+  <title>Eye State Recognition</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 30px;
+    }
+
+    .button {
+      padding: 6px 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
-  <h2>上传一张图片进行识别</h2>
+  <h2>Upload an Image</h2>
+
+  <!-- Custom label as button -->
+  <label for="fileInput" class="button">Choose File</label>
   <input type="file" id="fileInput" />
-  <button onclick="upload()">上传并识别</button>
+  <span id="filename">No file chosen</span>
+
+  <!-- Upload Button -->
+  <button class="button" onclick="upload()">Upload and Recognize</button>
+
+  <!-- Result display -->
   <h3 id="result"></h3>
 
   <script>
+    const fileInput = document.getElementById('fileInput');
+    const fileNameSpan = document.getElementById('filename');
+
+    fileInput.addEventListener('change', () => {
+      fileNameSpan.innerText = fileInput.files[0]?.name || 'No file chosen';
+    });
+
     function upload() {
-      const fileInput = document.getElementById('fileInput');
       const file = fileInput.files[0];
       if (!file) {
-        alert("请选择一个图片文件");
+        alert("Please choose an image file.");
         return;
       }
 
       const formData = new FormData();
       formData.append("file", file);
 
-      fetch("http://127.0.0.1:5050/predict", {
+      fetch("http://127.0.0.1:8080/predict", {
         method: "POST",
         body: formData
       })
       .then(response => response.json())
       .then(data => {
-        document.getElementById('result').innerText = "识别结果：" + data.prediction;
+        document.getElementById('result').innerText = "Prediction: " + data.prediction;
       })
       .catch(error => {
-        document.getElementById('result').innerText = "请求失败：" + error;
+        document.getElementById('result').innerText = "Request Failed: " + error;
       });
     }
   </script>

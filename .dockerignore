@@ -1,0 +1,23 @@
+# 不打包虚拟环境
+venv/
+
+# 不打包训练/测试数据文件夹
+data/
+test new data/
+
+# 不打包 notebook、测试、配置等无关文件
+*.ipynb
+*.csv
+*.zip
+*.tar.gz
+*.ckpt
+.DS_Store
+
+# 不打包 git 配置文件
+.gitattributes
+.gitignore
+.git/
+
+# 排除缓存和 pyc 文件
+__pycache__/
+*.pyc
